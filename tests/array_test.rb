@@ -3,12 +3,15 @@ require "test/unit"
 class ArrayTest < Test::Unit::TestCase
 
   def test_true
-    assert false
+    assert true
   end
 
   def test_reject
     array = [1,2,3,4,5,6,7,8]
     # put your code here
+    array = array.reject {|x| x.even? }
+    #array = array.reject {|x| x%2 == 0 }
+    #array = array.reject {|x| !x.odd? }
     assert_equal [1,3,5,7], array
   end
 
@@ -17,6 +20,7 @@ class ArrayTest < Test::Unit::TestCase
   def test_first_three
     array = [1,2,3,4,5]
     # put your code here
+    array=array.first(3)
     assert_equal [1,2,3], array
   end
 
@@ -24,13 +28,15 @@ class ArrayTest < Test::Unit::TestCase
   def test_last_three
     array = [1,2,3,4,5]
     # put your code here
+    array=array.last(3)
     assert_equal [3,4,5], array
   end
 
   # fix this test using only Array#map
   def test_map
     array = [1,2,3,4,5,6,7,8]
-    # put your code here
+    # put your code  
+    array=array.map{|x| x*2 }
     assert_equal [2, 4, 6, 8, 10, 12, 14, 16] , array
   end
 
@@ -42,6 +48,7 @@ class ArrayTest < Test::Unit::TestCase
   def test_map_bang
     array = [1,2,3,4,5,6,7,8]
     # put your code here
+    array.map!{|x| (x * 2) -1 }
     assert_equal [1, 3, 5, 7, 9, 11, 13, 15] , array
   end
 
@@ -55,6 +62,7 @@ class ArrayTest < Test::Unit::TestCase
   def test_oposite_of_reject
     array = ["hello", 2, 3, "there", "how", 9, "are you"]
     # put your code here
+    array = array.select{|item| item.is_a?(String)}
     assert_equal ["hello", "there", "how", "are you"], array
   end
 
@@ -69,6 +77,7 @@ class ArrayTest < Test::Unit::TestCase
   def  test_array_append
     array = [1,2,3,4,5]
     # put your code here
+    array=array.push(99)
     assert_equal [1,2,3,4,5,99], array
   end
 
@@ -79,6 +88,7 @@ class ArrayTest < Test::Unit::TestCase
     array_one = [1,2,3,4,5]
     array_two = [6,7,8,9,10]
     # put your code here
+    array=array_one + array_two
     assert_equal [1,2,3,4,5,6,7,8,9,10], array
   end
 
@@ -91,6 +101,7 @@ class ArrayTest < Test::Unit::TestCase
     array_one = [1,2,3,4,5]
     array_two = [2,5,9]
     # put your code here
+    array=array_one & array_two
     assert_equal [2,5], array
   end
 
@@ -102,6 +113,7 @@ class ArrayTest < Test::Unit::TestCase
     array_one = [1,2,3,4,5]
     array_two = [2,5,9]
     # put your code here
+     array=array_one - array_two
     assert_equal [1,3,4], array
   end
 
@@ -113,6 +125,7 @@ class ArrayTest < Test::Unit::TestCase
     array_one = [1,2,3,4,5]
     array_two = [2,5,9]
     # put your code here
+     array= array_two - array_one
     assert_equal [9], array
   end
 
@@ -121,6 +134,7 @@ class ArrayTest < Test::Unit::TestCase
   def test_fix_nested_array
     array = [1, [2], [3, [4,[5]]], 6]
     # put your code here
+    array= array.flatten
     assert_equal [1,2,3,4,5,6], array
   end
 
@@ -129,6 +143,7 @@ class ArrayTest < Test::Unit::TestCase
     array = []
     array_one = [1, nil, 2, 3, 4, nil, 5, nil]
     # put your code here
+    array= array_one.compact
     assert_equal [1,2,3,4,5], array
   end
 
@@ -139,6 +154,7 @@ class ArrayTest < Test::Unit::TestCase
     num_of_elem = nil
     array = [1,2,3,4]
     # put your code here
+    num_of_elem = array.count
     assert_equal 4, num_of_elem
   end
 
