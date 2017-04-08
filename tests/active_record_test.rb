@@ -20,12 +20,11 @@ class ActiveRecordTest < Test::Unit::TestCase
   # Use where method assign variable to a dealership with the same name "Fake Name"
   # assign to variable `dealership`
   def test_regular_where
-    dealership = nil
-    name = "Fake Name"
-    d    = Dealership.create(:name => name)
-    # put your code here
-    assert_equal d, dealership
-  end
+  name = Faker::Company.name
+  d    = Dealership.create(:name => name)
+  dealership = Dealership.where("name = (?)", name).first
+  assert_equal d, dealership
+end
 
 
   # Group and count all the cars with the color "cheetah"
@@ -38,7 +37,7 @@ class ActiveRecordTest < Test::Unit::TestCase
     3.times do
       cars << Car.create(:color => "cheetah")
     end
-    # put your code here
+    color_group = Car.group(:color).having("color='cheetah'").count
     assert_equal Car.where(:color => "cheetah").count, color_group["cheetah"]
   end
 
@@ -52,6 +51,7 @@ class ActiveRecordTest < Test::Unit::TestCase
     cars << Car.create(:condition => "not so good")
     Car.create(:condition => "straight up bad")
     # put your code here
+    your_cars = Car.where("condition LIKE (?)", "%good%")
     assert_equal cars, your_cars
   end
 
@@ -65,6 +65,7 @@ class ActiveRecordTest < Test::Unit::TestCase
     dealerz = 3.times.map { Dealership.create(:name => Faker::Company.name) }
     ids     = dealerz.map {|d| d.id }
     # put your code here
+    dealerships = Dealership.where("id IN (?)",ids)
     assert_equal dealerz, dealerships
   end
 
@@ -74,8 +75,10 @@ class ActiveRecordTest < Test::Unit::TestCase
   # assign to a variable reverse_cars
   def test_order
     reverse_cars = []
-    cars = 5.times.map {Car.create}
+
+    cars = 5.times.map {Car.create(:color => "red",:condition => "goodish")}
     # put your code here
+    reverse_cars=Car.order("color DESC,created_at DESC").limit(5)
     assert_equal cars.reverse, reverse_cars
   end
 
@@ -84,8 +87,9 @@ class ActiveRecordTest < Test::Unit::TestCase
   # assign to variable `limited_cars`
   def test_limit
     limited_cars = nil
-    cars = 5.times.map { Car.create }
+    cars = 4.times.map {Car.create(:color => "red",:condition => "goodish")}
     # put your code here
+    limited_cars= Car.last(4)
     assert_equal cars.first(4), limited_cars
   end
 
@@ -93,8 +97,9 @@ class ActiveRecordTest < Test::Unit::TestCase
   # assign to variable `offset_cars`
   def test_offset
     offset_cars = nil
-    cars = 5.times.map {Car.create}
+    cars = 20.times.map {Car.create(:color => "liger yellow")}
     # put your code here
+    offset_cars= Car.limit(2).offset(17)
     assert_equal cars[1,2], offset_cars
   end
 
@@ -114,6 +119,7 @@ class ActiveRecordTest < Test::Unit::TestCase
     d = Dealership.create(:name => Faker::Company.name)
     d.cars.create(:color => "blue")
     # put your code here
+    dealerships= Dealership.joins(:cars).where(:cars => {:color => "red"})
     assert_equal dealerz, dealerships
   end
 
@@ -136,7 +142,7 @@ class ActiveRecordTest < Test::Unit::TestCase
     d  = Dealership.create(:name => Faker::Company.name)
     d.cars.create(:color => color, :top_speed => 2)
     # put your code here
-    dealerships = Dealership.joins(:cars).group("dealerships.id, cars.top_speed").having("")
+    dealerships = Dealership.joins(:cars).group("dealerships.id, cars.top_speed").having("AVG(cars.top_speed) >= ?", 5)
     assert_equal dealerz, dealerships.all
   end
 

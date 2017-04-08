@@ -1,4 +1,4 @@
-require 'ffaker'
+require 'faker'
 
 100.times do
   dealership = Dealership.create(:name => Faker::Company.name)

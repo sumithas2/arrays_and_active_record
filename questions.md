@@ -29,7 +29,8 @@ https://ruby-doc.org/core-2.4.1/String.html#method-i-upcase
 
 
 0) Link to Rail's ActiveRecord querying conditions 
+http://guides.rubyonrails.org/active_record_querying.html#conditions
 
 1) Link from APIdock to Rail's ActiveRecord querying conditions  
-
+http://api.rubyonrails.org/classes/ActiveRecord/QueryMethods.html
 2) 
